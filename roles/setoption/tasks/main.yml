@@ -1,7 +1,7 @@
 - name: Init os var
   include_vars: "vars/{{ ansible_system | lower }}.yml"
 
-- name: Get zone path
+- name: Get named config path
   include_tasks: "getnamedconfigpath.yml"
 
 - name: Set bind9 options
