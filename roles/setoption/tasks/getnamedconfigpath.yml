@@ -1,0 +1,18 @@
+- name: "Check named.conf.options exists"
+  stat:
+    path: "{{ nameddir }}/named.conf.options"
+  register: result
+
+- name: "Set options path (named.conf.options)"
+  set_fact:
+    namedoptionspath: "{{ nameddir }}/named.conf.options"
+  when: result.stat.exists
+
+- name: "Set options path (named.conf)"
+  set_fact:
+    namedoptionspath: "{{ nameddir }}/named.conf"
+  when: not result.stat.exists
+
+- name: "Set zonepath var"
+  set_fact:
+    zonepath: "{{ lookup('file', namedoptionspath) | regex_search('\\s*directory\\s*\"(.*)\";', '\\1') | first }}"

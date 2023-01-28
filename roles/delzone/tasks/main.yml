@@ -1,0 +1,25 @@
+- name: Init os var
+  include_vars: "vars/{{ ansible_system | lower }}.yml"
+
+- name: Get zone path
+  include_tasks: "getnamedconfigpath.yml"
+
+- name: Check zone exist
+  shell: rndc showzone '"{{ zone }}"' | grep -oP "(?<={).*(?=})" | xargs -d\; -n 1 | grep file | awk '{print $2}' | jq -r
+  become: true
+  register: result
+  ignore_errors: true
+
+- name: Remove zone
+  command: rndc delzone '"{{ zone }}"'
+  become: true
+  when: result.stdout != ""
+
+- name: Remove zone file
+  command: rm {{ result.stdout }} {{ result.stdout }}.jnl
+  args: 
+    chdir: "{{ zonepath }}"
+  ignore_errors: true
+  become: true
+  when: result.stdout != ""
+

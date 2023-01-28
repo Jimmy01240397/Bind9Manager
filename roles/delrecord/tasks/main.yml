@@ -1,0 +1,6 @@
+- name: Init os var
+  include_vars: "vars/{{ ansible_system | lower }}.yml"
+
+- name: Delete record
+  raw: echo "server 127.0.0.1;update del {{ host }}.{{ zone }} {{ type }} {{ data }};send;quit" | xargs -d \; -n 1 | nsupdate -k {{ nameddir }}/rndc.key
+  become: true

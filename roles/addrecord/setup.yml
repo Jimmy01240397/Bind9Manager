@@ -1,0 +1,13 @@
+- hosts: localhost
+  vars_files:
+    - defaults/main.yml
+
+  roles: 
+    - name: addzone
+      NSIP: 10.31.31.254
+
+  tasks:
+    - name: include main task
+      include: tasks/main.yml
+
+  handlers: []

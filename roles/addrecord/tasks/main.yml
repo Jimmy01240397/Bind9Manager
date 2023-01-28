@@ -1,0 +1,6 @@
+- name: Init os var
+  include_vars: "vars/{{ ansible_system | lower }}.yml"
+
+- name: Add record
+  raw: echo "server 127.0.0.1;update add {{ host }}.{{ zone }} 604800 {{ type }} {{ data }};send;quit" | xargs -d \; -n 1 | nsupdate -k {{ nameddir }}/rndc.key
+  become: true

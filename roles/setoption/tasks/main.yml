@@ -1,0 +1,13 @@
+- name: Init os var
+  include_vars: "vars/{{ ansible_system | lower }}.yml"
+
+- name: Get zone path
+  include_tasks: "getnamedconfigpath.yml"
+
+- name: Set bind9 options
+  lineinfile:
+    path: "{{ namedoptionspath }}"
+    insertafter: "^\\s*directory.*;\\s*$"
+    regexp: "{{ regexp }}"
+    line: "{{ option }}"
+  become: true

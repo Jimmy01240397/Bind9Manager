@@ -1,0 +1,23 @@
+- name: Init os var
+  include_vars: "vars/{{ ansible_system | lower }}.yml"
+
+- name: Get zone path
+  include_tasks: "getnamedconfigpath.yml"
+
+- name: Check zone exist
+  command: rndc showzone '"{{ zone }}"'
+  become: true
+  register: result
+  ignore_errors: true
+
+- name: Init zone file
+  template:
+    src: templates/zonefile.conf
+    dest: "{{ zonepath }}/db.{{ zone }}"
+  become: true
+  when: result is failed and result.stdout == ""
+
+- name: Add zone
+  command: rndc addzone '"{{ zone }}" { type master; file "db.{{ zone }}"; allow-update { key "rndc-key"; }; };'
+  become: true
+  when: result is failed and result.stdout == ""

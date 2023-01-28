@@ -1,0 +1,4 @@
+host: www
+zone: test
+type: A
+data: 127.0.0.1
