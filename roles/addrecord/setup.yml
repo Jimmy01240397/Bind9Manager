@@ -4,7 +4,8 @@
 
   roles: 
     - name: addzone
-      NSIP: 10.31.31.254
+      NSIP: "{{ NSIP }}"
+      zone: "{{ zone }}"
 
   tasks:
     - name: include main task

@@ -3,11 +3,12 @@ printhelp()
 {
 	echo "Usage: $0 [options]
 Options:
-  -h, --help                    display this help message and exit.
-  -n, --hostname HOSTNAME       Hostname of record.
-  -z, --zone ZONE               zone of record.
-  -t, --type TYPE               type of record.
-  -d, --data DATA               data of record." 1>&2
+  -h, --help                        display this help message and exit.
+  -n, --hostname HOSTNAME           Hostname of record.
+  -z, --zone ZONE                   zone of record.
+  -t, --type TYPE                   type of record.
+  -d, --data DATA                   data of record.
+  -ns, --rootNSrecordIP HOSTNAME    NS IP for addzone." 1>&2
 	exit 1
 }
 
@@ -17,6 +18,7 @@ hostname=""
 zone=""
 type=""
 data=""
+NSIP=""
 
 while [ "$1" != "" ]
 do
@@ -40,6 +42,10 @@ do
             shift
             data=$1
             ;;
+        -ns|--rootNSrecordIP)
+            shift
+            NSIP=",\"NSIP\":\"$1\""
+            ;;
     esac
     shift
 done
@@ -49,6 +55,6 @@ then
     printhelp
 fi
 
-ansible-playbook $dirpath/roles/addrecord/setup.yml -e "{\"host\":\"$hostname\",\"zone\":\"$zone\",\"type\":\"$type\",\"data\":\"$data\"}"
+ansible-playbook $dirpath/roles/addrecord/setup.yml -e "{\"host\":\"$hostname\",\"zone\":\"$zone\",\"type\":\"$type\",\"data\":\"$data\"$NSIP}"
 
 
