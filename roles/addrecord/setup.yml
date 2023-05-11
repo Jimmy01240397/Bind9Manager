@@ -3,7 +3,7 @@
     - defaults/main.yml
 
   roles: 
-    - name: addzone
+    - name: ../../addzone
       NSIP: "{{ NSIP }}"
       zone: "{{ zone }}"
 
