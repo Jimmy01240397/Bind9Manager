@@ -37,8 +37,8 @@ POST:
 """
 
 def checkdomain(ch, ans):
-    ch = ch.rstrip('.').split('.')
-    ans = ans.rstrip('.').split('.')
+    ch = ch.strip().rstrip('.').split('.')
+    ans = ans.strip().rstrip('.').split('.')
     if len(ch) != len(ans): return False
     for a in range(len(ch)):
         if(ch[a] != ans[a] and ans[a] != '*'):
@@ -49,8 +49,8 @@ def checkdomain(ch, ans):
 def addrecord():
     data = flask.request.get_json()
     for a in config['auth']:
-        if checkdomain(f"{a['hostname']}.{a['zone']}", data['name']) and a['username'] == data['username'] and a['password'] == data['password'] and data['type'] in a['allowtype']:
-            process = subprocess.run(['bash', 'addrecord.sh', '-n', a['hostname'], '-z', a['zone'], '-t', data['type'], '-d', data['data']])
+        if checkdomain(f"{a['hostname'].strip()}.{a['zone'].strip()}", data['name'].strip()) and a['username'].strip() == data['username'].strip() and a['password'].strip() == data['password'].strip() and data['type'].strip() in a['allowtype']:
+            process = subprocess.run(['bash', 'addrecord.sh', '-n', a['hostname'].strip(), '-z', a['zone'].strip(), '-t', data['type'].strip(), '-d', data['data'].strip()])
             if process.returncode != 0:
                 return "Error", 500
             break
@@ -61,8 +61,8 @@ def delrecord():
     data = flask.request.get_json()
     if 'data' not in data: data['data'] = ''
     for a in config['auth']:
-        if checkdomain(f"{a['hostname']}.{a['zone']}", data['name']) and a['username'] == data['username'] and a['password'] == data['password'] and data['type'] in a['allowtype']:
-            process = subprocess.run(['bash', 'delrecord.sh', '-n', a['hostname'], '-z', a['zone'], '-t', data['type'], '-d', data['data']])
+        if checkdomain(f"{a['hostname'].strip()}.{a['zone'].strip()}", data['name'].strip()) and a['username'].strip() == data['username'].strip() and a['password'].strip() == data['password'].strip() and data['type'].strip() in a['allowtype']:
+            process = subprocess.run(['bash', 'delrecord.sh', '-n', a['hostname'].strip(), '-z', a['zone'].strip(), '-t', data['type'].strip(), '-d', data['data'].strip()])
             if process.returncode != 0:
                 return "Error", 500
             break
