@@ -55,6 +55,11 @@ then
     printhelp
 fi
 
+if [ "$zone" == "." ]
+then
+    zone=""
+fi
+
 ansible-playbook $dirpath/roles/addrecord/setup.yml -e "{\"host\":\"$hostname\",\"zone\":\"$zone\",\"type\":\"$type\",\"data\":\"$data\"$NSIP}"
 
 
