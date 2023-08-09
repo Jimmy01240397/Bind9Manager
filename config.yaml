@@ -1,0 +1,7 @@
+ListenHost: [::]
+ListenPort: 3053
+auth:
+- hostname: www
+  zone: example.com.
+  username: test
+  password: testpass
