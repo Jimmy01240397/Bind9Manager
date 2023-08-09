@@ -37,20 +37,33 @@ POST:
 """
 
 def checkdomain(ch, ans):
-    ch = ch.strip().rstrip('.').split('.')
-    ans = ans.strip().rstrip('.').split('.')
+    ch = ch.strip()
+    while ch[-1] == '.': ch = ch.rstrip('.')
+    ch = ch.split('.')
+    ans = ans.strip()
+    while ans[-1] == '.': ans = ans.rstrip('.')
+    ans = ans.split('.')
     if len(ch) != len(ans): return False
     for a in range(len(ch)):
         if(ch[a] != ans[a] and ans[a] != '*'):
             return False
     return True
 
+def gethostname(domain, zone):
+    domain = domain.strip()
+    while domain[-1] == '.': domain = domain.rstrip('.')
+    zone = zone.strip()
+    while zone[-1] == '.': zone = zone.rstrip('.')
+    result = domain[::-1].replace(zone[::-1], "", 1)[::-1].strip()
+    while result[-1] == '.': result = result.rstrip('.')
+    return result
+
 @app.route('/addrecord',methods=['POST'])
 def addrecord():
     data = flask.request.get_json()
     for a in config['auth']:
         if checkdomain(data['name'].strip(), f"{a['hostname'].strip()}.{a['zone'].strip()}") and a['username'].strip() == data['username'].strip() and a['password'].strip() == data['password'].strip() and data['type'].strip() in a['allowtype']:
-            process = subprocess.run(['bash', 'addrecord.sh', '-n', a['hostname'].strip(), '-z', a['zone'].strip(), '-t', data['type'].strip(), '-d', data['data'].strip()])
+            process = subprocess.run(['bash', 'addrecord.sh', '-n', gethostname(data['name'], a['zone']), '-z', a['zone'].strip(), '-t', data['type'].strip(), '-d', data['data'].strip()])
             if process.returncode != 0:
                 return "Error", 500
             break
