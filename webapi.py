@@ -69,4 +69,4 @@ def delrecord():
     return "Bad auth", 403
 
 if __name__ == "__main__":
-    app.run(host=config['ListenHost'],port=int(config['ListenPort']))
+    app.run(host=config['ListenHost'].strip().lstrip('[').rstrip(']'),port=int(config['ListenPort']))
