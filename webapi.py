@@ -60,7 +60,7 @@ def gethostname(domain, zone):
 
 @app.route('/<string:mode>',methods=['POST'])
 def setrecord(mode):
-    if mode != 'addrecord' or mode != 'delrecord':
+    if mode != 'addrecord' and mode != 'delrecord':
         return 'Not Found', 404
     data = flask.request.get_json()
     for a in config['auth']:
