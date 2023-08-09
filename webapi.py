@@ -66,7 +66,7 @@ def addrecord():
             process = subprocess.run(['bash', 'addrecord.sh', '-n', gethostname(data['name'], a['zone']), '-z', a['zone'].strip(), '-t', data['type'].strip(), '-d', data['data'].strip()])
             if process.returncode != 0:
                 return "Error", 500
-            break
+            return "Success"
     return "Bad auth", 403
 
 @app.route('/delrecord',methods=['POST'])
@@ -78,7 +78,7 @@ def delrecord():
             process = subprocess.run(['bash', 'delrecord.sh', '-n', a['hostname'].strip(), '-z', a['zone'].strip(), '-t', data['type'].strip(), '-d', data['data'].strip()])
             if process.returncode != 0:
                 return "Error", 500
-            break
+            return "Success"
     return "Bad auth", 403
 
 if __name__ == "__main__":
