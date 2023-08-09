@@ -23,7 +23,7 @@ POST:
                         data: record data
                         username: username
                         password: password
-                    Ex: curl -H 'Content-Type: application/json' <host>/addrecord -X POST -d '{"name":"www.example.com", "type": "A", "data": "192.168.0.1", "username": "test", "password": "testpass"}'
+                    Ex: curl -H 'Content-Type: application/json' <host>/addrecord -X POST -d '{{"name":"www.example.com", "type": "A", "data": "192.168.0.1", "username": "test", "password": "testpass"}}'
     delrecord       Delete dns record.
                     inputtype: json
                     outputtype: string
@@ -33,7 +33,7 @@ POST:
                         data: record data
                         username: username
                         password: password
-                    Ex: curl -H 'Content-Type: application/json' <host>/delrecord -X POST -d '{"name":"www.example.com", "type": "A", "data": "192.168.0.1", "username": "test", "password": "testpass"}'
+                    Ex: curl -H 'Content-Type: application/json' <host>/delrecord -X POST -d '{{"name":"www.example.com", "type": "A", "data": "192.168.0.1", "username": "test", "password": "testpass"}}'
 """
 
 def checkdomain(ch, ans):
