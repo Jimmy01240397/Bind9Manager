@@ -49,7 +49,7 @@ def checkdomain(ch, ans):
 def addrecord():
     data = flask.request.get_json()
     for a in config['auth']:
-        if checkdomain(f"{a['hostname'].strip()}.{a['zone'].strip()}", data['name'].strip()) and a['username'].strip() == data['username'].strip() and a['password'].strip() == data['password'].strip() and data['type'].strip() in a['allowtype']:
+        if checkdomain(data['name'].strip(), f"{a['hostname'].strip()}.{a['zone'].strip()}") and a['username'].strip() == data['username'].strip() and a['password'].strip() == data['password'].strip() and data['type'].strip() in a['allowtype']:
             process = subprocess.run(['bash', 'addrecord.sh', '-n', a['hostname'].strip(), '-z', a['zone'].strip(), '-t', data['type'].strip(), '-d', data['data'].strip()])
             if process.returncode != 0:
                 return "Error", 500
@@ -61,7 +61,7 @@ def delrecord():
     data = flask.request.get_json()
     if 'data' not in data: data['data'] = ''
     for a in config['auth']:
-        if checkdomain(f"{a['hostname'].strip()}.{a['zone'].strip()}", data['name'].strip()) and a['username'].strip() == data['username'].strip() and a['password'].strip() == data['password'].strip() and data['type'].strip() in a['allowtype']:
+        if checkdomain(data['name'].strip(), f"{a['hostname'].strip()}.{a['zone'].strip()}") and a['username'].strip() == data['username'].strip() and a['password'].strip() == data['password'].strip() and data['type'].strip() in a['allowtype']:
             process = subprocess.run(['bash', 'delrecord.sh', '-n', a['hostname'].strip(), '-z', a['zone'].strip(), '-t', data['type'].strip(), '-d', data['data'].strip()])
             if process.returncode != 0:
                 return "Error", 500
