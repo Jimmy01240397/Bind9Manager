@@ -38,10 +38,10 @@ POST:
 
 def checkdomain(ch, ans):
     ch = ch.strip()
-    while ch[-1] == '.': ch = ch.rstrip('.')
+    while len(ch) > 0 and ch[-1] == '.': ch = ch.rstrip('.')
     ch = ch.split('.')
     ans = ans.strip()
-    while ans[-1] == '.': ans = ans.rstrip('.')
+    while len(ans) > 0 and ans[-1] == '.': ans = ans.rstrip('.')
     ans = ans.split('.')
     if len(ch) != len(ans): return False
     for a in range(len(ch)):
@@ -51,11 +51,11 @@ def checkdomain(ch, ans):
 
 def gethostname(domain, zone):
     domain = domain.strip()
-    while domain[-1] == '.': domain = domain.rstrip('.')
+    while len(domain) > 0 and domain[-1] == '.': domain = domain.rstrip('.')
     zone = zone.strip()
-    while zone[-1] == '.': zone = zone.rstrip('.')
+    while len(zone) > 0 and zone[-1] == '.': zone = zone.rstrip('.')
     result = domain[::-1].replace(zone[::-1], "", 1)[::-1].strip()
-    while result[-1] == '.': result = result.rstrip('.')
+    while len(result) > 0 and result[-1] == '.': result = result.rstrip('.')
     return result
 
 @app.route('/addrecord',methods=['POST'])
